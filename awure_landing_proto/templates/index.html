@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awure Beleza Ancestral | Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="topbar">
+        <a class="brand" href="#inicio" aria-label="Awure Beleza Ancestral">
+            <span class="brand-symbol">AW</span>
+            <span>
+                <strong>AWURE</strong>
+                <small>Beleza Ancestral</small>
+            </span>
+        </a>
+        <nav>
+            <a href="#servicos">Serviços</a>
+            <a href="#cursos">Cursos</a>
+            <a href="#lead">Contato</a>
+        </nav>
+    </header>
+
+    <main id="inicio">
+        <section class="hero section-glow">
+            <div class="hero-content">
+                <span class="tag">@AWUREBELEZAANCESTRAL</span>
+                <p class="eyebrow">Conheça nossos</p>
+                <h1>Serviços de beleza, cuidado e ancestralidade.</h1>
+                <p class="subtitle">
+                    Uma experiência completa para quem busca autoestima, presença e cuidado com propósito.
+                    Atendimento humanizado, técnicas de estética e uma identidade visual que transmite confiança.
+                </p>
+                <div class="hero-actions">
+                    <a href="#lead" class="btn btn-primary">Quero atendimento</a>
+                    <a href="{{ coworkers_form }}" target="_blank" rel="noopener" class="btn btn-secondary">Sou
+                        coworker</a>
+                </div>
+                <div class="trust-row">
+                    <span>Beleza ancestral</span>
+                    <span>Estética facial</span>
+                    <span>Cursos e agenda</span>
+                </div>
+            </div>
+            <!-- <div class="hero-card" aria-label="Resumo da Awure">
+                <div class="orb orb-one"></div>
+                <div class="orb orb-two"></div>
+                <h2>Foi aqui que pediram cursos?</h2>
+                <p>
+                    Acompanhe a agenda de cursos, serviços e experiências Awure para evoluir sua técnica,
+                    fortalecer sua imagem e ampliar suas possibilidades no mercado da beleza.
+                </p>
+                <div class="mini-stats">
+                    <div><strong>17+</strong><small>serviços</small></div>
+                    <div><strong>360°</strong><small>cuidado</small></div>
+                    <div><strong>100%</strong><small>identidade</small></div>
+                </div>
+            </div>-->
+        </section>
+
+        <section class="section" id="servicos">
+            <div class="section-heading">
+                <span class="eyebrow">Você sabe quais os</span>
+                <h2>Serviços que oferecemos?</h2>
+                <p>
+                    Soluções para pele, cabelos, sobrancelhas, cílios, corpo, maquiagem e bem-estar,
+                    organizadas para gerar clareza na escolha e confiança no primeiro contato.
+                </p>
+            </div>
+            <div class="services-grid">
+                {% for servico in servicos %}
+                <article class="service-card">
+                    <span class="service-number">{{ '%02d'|format(loop.index) }}</span>
+                    <h3>{{ servico }}</h3>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="courses" id="cursos">
+            <div>
+                <span class="tag">Agenda de cursos</span>
+                <h2>Aprenda com uma marca que une técnica, estética e posicionamento.</h2>
+                <p>
+                    A Awure comunica beleza com presença. Esta landing page valoriza a agenda de cursos,
+                    os serviços e a captura de leads para transformar visitantes em clientes e interessados em formação.
+                </p>
+            </div>
+            <a href="#lead" class="btn btn-light">Quero saber mais</a>
+        </section>
+
+        <section class="section lead-section" id="lead">
+            <div class="lead-copy">
+                <span class="eyebrow">Atendimento personalizado</span>
+                <h2>Receba contato da equipe Awure.</h2>
+                <p>
+                    Preencha seus dados para receber informações sobre serviços, cursos, horários e possibilidades de
+                    parceria.
+                    Pedimos apenas as informações certas para entender seu perfil e retornar com mais precisão.
+                </p>
+                <ul class="benefits">
+                    <li>Atendimento direcionado ao seu interesse.</li>
+                    <li>Contato para cursos, serviços ou parcerias.</li>
+                    <li>Experiência visual elegante, fluida e profissional.</li>
+                </ul>
+            </div>
+
+            <form class="lead-form" action="{{ url_for('capturar_lead') }}" method="POST">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <label>Nome completo *</label>
+                <input type="text" name="nome" placeholder="Seu nome" required>
+
+                <label>E-mail *</label>
+                <input type="email" name="email" placeholder="seuemail@email.com" required>
+
+                <label>Telefone / WhatsApp *</label>
+                <input type="tel" name="telefone" placeholder="(00) 00000-0000" required>
+
+                <div class="form-row">
+                    <div>
+                        <label>Nome da empresa</label>
+                        <input type="text" name="empresa" placeholder="Opcional">
+                    </div>
+                    <div>
+                        <label>Cargo</label>
+                        <input type="text" name="cargo" placeholder="Opcional">
+                    </div>
+                </div>
+
+                <label>Principal interesse</label>
+                <select name="interesse">
+                    <option value="Serviços de estética">Serviços de estética</option>
+                    <option value="Cursos">Cursos</option>
+                    <option value="Parceria / Coworker">Parceria / Coworker</option>
+                    <option value="Maquiagem e eventos">Maquiagem e eventos</option>
+                    <option value="Outro">Outro</option>
+                </select>
+
+                <label>Mensagem</label>
+                <textarea name="mensagem" rows="4" placeholder="Conte brevemente o que você procura"></textarea>
+
+                <button type="submit" class="btn btn-primary full">Enviar meu contato</button>
+                <a href="{{ coworkers_form }}" target="_blank" rel="noopener" class="coworker-link">Formulário exclusivo
+                    para coworkers</a>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <strong>AWURE Beleza Ancestral</strong>
+        <span>Serviços, cursos e experiências de cuidado com identidade.</span>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
